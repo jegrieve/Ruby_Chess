@@ -10,10 +10,21 @@ class ChessBoard
             puts "#{i1} #{row}"
         end
     end
+    
+    def rotate_board
+        self.board.reverse!
+        self.board.each do |row|
+            row.reverse!
+        end
+    end
 end
 
  a = ChessBoard.new
+wking = "\u2654"
+a.board[0][0] = wking
+ a.rotate_board
 a.display
+
 
 #white pieces
 # wking = "\u2654"
