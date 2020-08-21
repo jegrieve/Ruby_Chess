@@ -100,6 +100,21 @@ class Board
                 end
             end
         end
+
+        def valid_board_moves
+            moves = []
+            self.board.each_with_index do |row, i|
+                j = 0
+                while j < 8
+                    move = []
+                    move << j
+                    move << i
+                    moves << move
+                    j += 1
+                end
+            end
+            moves
+        end
     end
 
 
@@ -110,7 +125,7 @@ a = Board.new
 a.populate_top
 a.populate
 a.display
-
+p a.valid_board_moves
 
 
 #white pieces
