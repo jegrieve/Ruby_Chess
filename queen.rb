@@ -1,3 +1,0 @@
-class Queen
-
-end

@@ -1,3 +1,0 @@
-class Bishop
-
-end

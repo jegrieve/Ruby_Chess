@@ -1,16 +1,15 @@
 class Pawn
-    attr_accessor :value
-    def initialize(name, color)
-        @value = "\u2654"
-        @name = player
-        @color = color
+    attr_accessor :value, :count
+    def initialize(player, value)
+        @value = value
+        @player = player
         @count = 0
     end
 
-    def possible_moves(pos, attack = false) #only forward move for now
+    def possible_moves(pos) #only forward move for now
         y, x = pos
         moves = []
-        if count == 0 #forward move
+        if self.count == 0 #forward move
             moves << [y - 1, x]
             moves << [y - 2, x]
             self.count += 1
@@ -28,3 +27,5 @@ class Pawn
     #     end
     #  end
 end
+a = Pawn.new("a", "b")
+p a.possible_moves([0,0])
