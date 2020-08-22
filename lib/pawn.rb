@@ -2,19 +2,22 @@ class Pawn
     attr_accessor :value, :count
     def initialize(player, value)
         @value = value
+        @piece = "Pawn"
         @player = player
         @count = 0
     end
 
-    def possible_moves(pos) #only forward move for now
+    def possible_moves(pos) 
         y, x = pos
         moves = []
-        if self.count == 0 #forward move
+        if self.count == 0 
             moves << [y - 1, x]
             moves << [y - 2, x]
             self.count += 1
         else
             moves << [y - 1, x]
+            moves << [y - 1, x + 1]
+            moves << [y - 1, x - 1]
         end
         moves
     end
@@ -28,4 +31,4 @@ class Pawn
     #  end
 end
 a = Pawn.new("a", "b")
-p a.possible_moves([0,0])
+p a.possible_moves([3,3])
