@@ -1,32 +1,40 @@
 require "./lib/board.rb"
+require "./lib/player.rb"
+
 class Game
-    attr_accessor :board
-    def initialize(player1, player2)
-        @board = Board.new
-        @players = [player2, player2] #these will be player instances
+    attr_accessor :board, :players, :game_board
+    def initialize(player1,player2)
+        @game_board = Board.new(player1, player2)
+        @players = [player1,player2] #these will be player instances
         run
     end
 
     def run
-        player_turn = self.players
-        while !win?(current_player)
+        current_player = self.players.first
+        piece_input = current_player.get_input_piece
+        while !valid_piece?(piece_input, current_player)
+            puts "Piece not valid, please choose a valid piece"
             piece_input = current_player.get_input_piece
-            move_input = current_player.get_input_move
         end
+        piece = selected_piece(piece_input)
+        p piece
+        self.players.reverse!
     end
 
-    def display_board
-        self.board.display
+    def valid_piece?(piece_pos, current_player)
+        y, x = piece_pos
+        return false if self.game_board.board[y][x] == " " || self.game_board.board[y][x].player != current_player.player
+        true
     end
 
-    def rotate_board
-        self.rotate_board
+    def selected_piece(piece_pos)
+        y, x = piece_pos
+        self.game_board.board[y][x]
     end
 
-    def win?(current_player)
-        # current_player
-    end
 end
+
+Game.new(Player.new("james"),Player.new("adam"))
 
 
 # if __FILE__ == $PROGRAM_NAME
@@ -37,7 +45,3 @@ end
 #     player_2 = gets.chomp
 #     Game.new(Player.new(player_1), Player.new(player2))
 # end
-a = Game.new("a","b")
-a.display_board
-a.rotate_board
-a.display_board

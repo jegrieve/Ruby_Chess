@@ -1,5 +1,5 @@
 class Rook
-    attr_accessor :value
+    attr_accessor :value, :player
     def initialize(player, value)
         @value = value
         @piece = "Rook"

@@ -1,5 +1,5 @@
 class Bishop
-    attr_accessor :value
+    attr_accessor :value, :player
     def initialize(player, value)
         @value = value
         @player = player
@@ -36,6 +36,3 @@ class Bishop
         moves    
     end
 end
-
-a = Bishop.new("a","b")
-p a.diagonal_left([3,3])

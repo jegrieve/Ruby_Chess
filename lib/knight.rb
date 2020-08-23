@@ -1,5 +1,5 @@
 class Knight
-    attr_accessor :value
+    attr_accessor :value, :player
     def initialize(player, value)
         @value = value
         @piece = "Knight"
@@ -17,5 +17,4 @@ class Knight
         end
         moves
     end
-
 end

@@ -1,5 +1,5 @@
 class Queen
-    attr_accessor :value
+    attr_accessor :value, :player
     def initialize(player, value)
         @value = value
         @player = player
@@ -64,6 +64,3 @@ class Queen
         moves    
     end
 end
-
-a = Queen.new("a","b")
-p a.possible_moves([3,3])

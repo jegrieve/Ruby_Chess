@@ -4,13 +4,11 @@ require "./lib/bishop.rb"
 require "./lib/knight.rb"
 require "./lib/queen.rb"
 require "./lib/king.rb"
-
-
-
 class Board
     attr_accessor :board
-    def initialize
+    def initialize(player1, player2)
         @board = Array.new(8) {Array.new(8, " ")}
+        populate(player1.player, player2.player)
     end
 
     def display
@@ -41,61 +39,61 @@ class Board
         end
     end
 
-    def populate
-        populate_pawns
-        populate_top
-        populate_bot
+    def populate(player1, player2)
+        populate_pawns(player1, player2)
+        populate_top(player1, player2)
+        populate_bot(player1, player2)
     end
 
-    def populate_pawns #just pawns for now, add other pieces later
+    def populate_pawns(player1, player2) #just pawns for now, add other pieces later
         board = self.board
         board.each_with_index do |row, y|
             row.each_with_index do |col, x|
                 if y == 1 
-                    board[y][x] = Pawn.new("test", "\u265F")
+                    board[y][x] = Pawn.new(player1, "\u265F")
                 elsif y == 6
-                    board[y][x] = Pawn.new("test", "\u2659")
+                    board[y][x] = Pawn.new(player2, "\u2659")
                 end
             end
         end
     end
 
-    def populate_top #populate non-pawn black pieces
+    def populate_top(player1, player2) #populate non-pawn black pieces
         board = self.board
         board.each_with_index do |row, y|
             row.each_with_index do |col, x|
                 if y == 0
                     if x == 0 || x == 7
-                        board[y][x] = Rook.new("test", "\u265C")
+                        board[y][x] = Rook.new(player2, "\u265C")
                     elsif x == 1 || x == 6
-                        board[y][x] = Knight.new("test", "\u265E")
+                        board[y][x] = Knight.new(player2, "\u265E")
                     elsif x == 2 || x == 5
-                        board[y][x] = Bishop.new("test", "\u265D")
+                        board[y][x] = Bishop.new(player2, "\u265D")
                     elsif x == 3
-                        board[y][x] = Queen.new("test", "\u265B")
+                        board[y][x] = Queen.new(player2, "\u265B")
                     elsif x == 4
-                        board[y][x] = King.new("test", "\u265A")
+                        board[y][x] = King.new(player2, "\u265A")
                     end
                 end
             end
         end
     end
 
-    def populate_bot #populate non-pawn white pieces
+    def populate_bot(player1, player2) #populate non-pawn white pieces
         board = self.board
         board.each_with_index do |row, y|
             row.each_with_index do |col, x|
                 if y == 7
                     if x == 0 || x == 7
-                        board[y][x] = Rook.new("test", "\u2656")
+                        board[y][x] = Rook.new(player1, "\u2656")
                     elsif x == 1 || x == 6
-                        board[y][x] = Knight.new("test", "\u2658")
+                        board[y][x] = Knight.new(player1, "\u2658")
                     elsif x == 2 || x == 5
-                        board[y][x] = Bishop.new("test", "\u2657")
+                        board[y][x] = Bishop.new(player1, "\u2657")
                     elsif x == 3
-                        board[y][x] = Queen.new("test", "\u2655")
+                        board[y][x] = Queen.new(player1, "\u2655")
                     elsif x == 4
-                        board[y][x] = King.new("test", "\u2654")
+                        board[y][x] = King.new(player1, "\u2654")
                     end
                 end
             end
@@ -116,17 +114,7 @@ class Board
             moves
         end
     end
-
-
-
 end
-
-a = Board.new
-a.populate_top
-a.populate
-a.display
-p a.valid_board_moves
-
 
 #white pieces
 # wking = "\u2654"

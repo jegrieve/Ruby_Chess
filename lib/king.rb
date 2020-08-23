@@ -1,5 +1,5 @@
 class King
-    attr_accessor :value
+    attr_accessor :value, :player
     def initialize(player, value)
         @value = value
         @player = player
@@ -8,9 +8,9 @@ class King
     def possible_moves(pos) 
         y, x = pos
         moves = []
-        moves << top_moves(pos)
-        moves << side_moves(pos)
-        moves << bot_moves(pos)
+        top_moves(pos).each {|move| moves << move}
+        side_moves(pos).each {|move| moves << move}
+        bot_moves(pos).each {|move| moves << move}
         moves
     end
 
@@ -40,6 +40,3 @@ class King
         moves
     end
 end
-
-a = King.new("a","b")
-p a.possible_moves ([3,3])

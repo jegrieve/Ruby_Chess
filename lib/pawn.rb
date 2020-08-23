@@ -1,5 +1,5 @@
 class Pawn
-    attr_accessor :value, :count
+    attr_accessor :value, :count, :player
     def initialize(player, value)
         @value = value
         @piece = "Pawn"
@@ -30,5 +30,3 @@ class Pawn
     #     end
     #  end
 end
-a = Pawn.new("a", "b")
-p a.possible_moves([3,3])
