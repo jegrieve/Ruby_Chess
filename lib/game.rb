@@ -23,7 +23,7 @@ class Game
         
         while !valid_move?(piece_input, move_input, piece) || !valid_game_move(piece_input, move_input, piece)
             puts "Move not valid, please choose a valid move"
-            move_input = current_player.get_input_move
+            move_input = current_player.get_input_move(piece)
         end
         place_piece(move_input, piece, piece_input)
         self.players.reverse!
@@ -87,13 +87,13 @@ class Game
         i, j = move_input #move to this location input
         return false if y == i && x == j
 
+        if self.game_board.board[i][j] != " "
+            return false if self.game_board.board[i][j].player == piece.player
+        end
+
         if y == i #horizontal case
             move_array = self.game_board.board[y]
         
-            if move_array[j] != " "
-                return false if move_array[j].player == piece.player
-            end
-
             if x < j    
                 x += 1
                 while x < j 
@@ -111,10 +111,6 @@ class Game
         elsif x == j #vertical case
             move_array = self.game_board.board.transpose[x]
         
-            if move_array[i] != " "
-                return false if move_array[i].player == piece.player
-            end
-
             if y < i    
                 y += 1
                 while y < i 
@@ -149,9 +145,61 @@ class Game
         return true
     end
 
-    # def bishop_valid_moves(piece_input, move_input, piece)
+    def bishop_valid_moves(piece_input, move_input, piece)
+        y, x = piece_input #current location input
+        i, j = move_input #move to this location input
 
-    # end
+        return false if y == i && x == j
+
+        if self.game_board.board[i][j] != " "
+            return false if self.game_board.board[i][j].player == piece.player
+        end
+
+        if y < i  #UP
+            #while
+            y += 1
+            if x < j #RIGHT
+                x += 1
+                while x < j
+                    return false if self.game_board.board[y][x] != " " 
+                    x += 1
+                    y += 1
+                end
+
+            else # LEFT
+                x -= 1
+                while x > j
+                    return false if self.game_board.board[y][x] != " " 
+                    x -= 1
+                    y += 1
+                end
+            end
+            #end
+        else #DOWN
+            y -= 1
+            if x < j #RIGHT
+                x += 1
+
+                while x < j
+                    return false if self.game_board.board[y][x] != " " 
+                    x += 1
+                    y -= 1
+                end
+            else #LEFT
+                x -= 1
+
+                while x > j
+                    return false if self.game_board.board[y][x] != " " 
+                    x -= 1
+                    y -= 1
+                end 
+            end
+            return true
+        end
+
+
+
+    end
 
     # def queen_valid_moves(piece_input, move_input, piece)
 
