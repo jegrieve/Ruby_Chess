@@ -19,7 +19,7 @@ class Game
             piece_input = current_player.get_input_piece
         end
         piece = selected_piece(piece_input)
-        move_input = current_player.get_input_move
+        move_input = current_player.get_input_move(piece)
         
         while !valid_move?(piece_input, move_input, piece) || !valid_game_move(piece_input, move_input, piece)
             puts "Move not valid, please choose a valid move"
@@ -131,6 +131,52 @@ class Game
             return true
         end
     end
+
+    # def pawn_valid_moves(piece_input, move_input, piece)
+
+    # end
+
+    def knight_valid_moves(piece_input, move_input, piece)
+        y, x = piece_input #current location input
+        i, j = move_input #move to this location input
+
+        return false if y == i && x == j
+
+        if self.game_board.board[i][j] != " "
+            return false if self.game_board.board[i][j].player == piece.player
+        end
+
+        return true
+    end
+
+    # def bishop_valid_moves(piece_input, move_input, piece)
+
+    # end
+
+    # def queen_valid_moves(piece_input, move_input, piece)
+
+    # end
+
+    def king_valid_moves(piece_input, move_input, piece) #will have to prevent being placed in check positions
+        y, x = piece_input #current location input
+        i, j = move_input #move to this location input
+
+        return false if y == i && x == j
+        #return false if check?(piece_input, move_input, piece)
+
+        if self.game_board.board[i][j] != " "
+            return false if self.game_board.board[i][j].player == piece.player
+        end
+
+        return true
+    end
+
+
+
+
+
+
+
 end
 
 #Todo:
