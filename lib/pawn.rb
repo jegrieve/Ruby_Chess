@@ -1,10 +1,10 @@
 class Pawn
-    attr_accessor :value, :count, :player
-    def initialize(player, value)
+    attr_accessor :value, :count, :player, :piece_type
+    def initialize(player, value, type)
         @value = value
-        @piece = "Pawn"
         @player = player
         @count = 0
+        @piece_type = type
     end
 
     def possible_moves(pos) 

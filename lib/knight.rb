@@ -1,9 +1,9 @@
 class Knight
-    attr_accessor :value, :player
-    def initialize(player, value)
+    attr_accessor :value, :player, :piece_type
+    def initialize(player, value, type)
         @value = value
-        @piece = "Knight"
         @player = player
+        @piece_type = type
     end
 
     def possible_moves(pos)

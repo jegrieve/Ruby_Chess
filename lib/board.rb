@@ -50,9 +50,9 @@ class Board
         board.each_with_index do |row, y|
             row.each_with_index do |col, x|
                 if y == 1 
-                    board[y][x] = Pawn.new(player1, "\u265F")
+                    board[y][x] = Pawn.new(player2, "\u265F", "Pawn")
                 elsif y == 6
-                    board[y][x] = Pawn.new(player2, "\u2659")
+                    board[y][x] = Pawn.new(player1, "\u2659", "Pawn")
                 end
             end
         end
@@ -64,15 +64,15 @@ class Board
             row.each_with_index do |col, x|
                 if y == 0
                     if x == 0 || x == 7
-                        board[y][x] = Rook.new(player2, "\u265C")
+                        board[y][x] = Rook.new(player2, "\u265C", "Rook")
                     elsif x == 1 || x == 6
-                        board[y][x] = Knight.new(player2, "\u265E")
+                        board[y][x] = Knight.new(player2, "\u265E", "Knight")
                     elsif x == 2 || x == 5
-                        board[y][x] = Bishop.new(player2, "\u265D")
+                        board[y][x] = Bishop.new(player2, "\u265D", "Bishop")
                     elsif x == 3
-                        board[y][x] = Queen.new(player2, "\u265B")
+                        board[y][x] = Queen.new(player2, "\u265B", "Queen")
                     elsif x == 4
-                        board[y][x] = King.new(player2, "\u265A")
+                        board[y][x] = King.new(player2, "\u265A", "King")
                     end
                 end
             end
@@ -85,15 +85,15 @@ class Board
             row.each_with_index do |col, x|
                 if y == 7
                     if x == 0 || x == 7
-                        board[y][x] = Rook.new(player1, "\u2656")
+                        board[y][x] = Rook.new(player1, "\u2656", "Rook")
                     elsif x == 1 || x == 6
-                        board[y][x] = Knight.new(player1, "\u2658")
+                        board[y][x] = Knight.new(player1, "\u2658", "Knight")
                     elsif x == 2 || x == 5
-                        board[y][x] = Bishop.new(player1, "\u2657")
+                        board[y][x] = Bishop.new(player1, "\u2657", "Bishop")
                     elsif x == 3
-                        board[y][x] = Queen.new(player1, "\u2655")
+                        board[y][x] = Queen.new(player1, "\u2655", "Queen")
                     elsif x == 4
-                        board[y][x] = King.new(player1, "\u2654")
+                        board[y][x] = King.new(player1, "\u2654", "King")
                     end
                 end
             end
