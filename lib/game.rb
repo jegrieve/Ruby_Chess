@@ -12,6 +12,7 @@ class Game
     def run
         display_board
         current_player = self.players.first
+        puts "#{current_player.player}'s turn'"
         piece_input = current_player.get_input_piece
         while !valid_piece?(piece_input, current_player)
             puts "Piece not valid, please choose a valid piece"
@@ -20,7 +21,7 @@ class Game
         piece = selected_piece(piece_input)
         move_input = current_player.get_input_move
         
-        while !valid_move?(piece_input, move_input, piece) # && valid_game_move(piece_input, move_input, piece)
+        while !valid_move?(piece_input, move_input, piece) || !valid_game_move(piece_input, move_input, piece)
             puts "Move not valid, please choose a valid move"
             move_input = current_player.get_input_move
         end
@@ -56,11 +57,27 @@ class Game
         self.game_board.board[j][i] = " "
     end
 
+    #--------------------------------------------------------------
 
-    def valid_game_move(piece_input, move_input, piece)
-        case piece.piece_value
+    def valid_game_move(piece_input, move_input, piece) #Checks if move is actually valid
+        case piece.piece_type
         when "Rook"
            return true if rook_valid_moves(piece_input, move_input, piece)
+           false  
+        when "Pawn"
+           return true if pawn_valid_moves(piece_input, move_input, piece)
+           false  
+        when "Knight"
+           return true if knight_valid_moves(piece_input, move_input, piece)
+           false  
+        when "Bishop"
+           return true if bishop_valid_moves(piece_input, move_input, piece)
+           false  
+        when "Queen"
+           return true if queen_valid_moves(piece_input, move_input, piece)
+           false  
+        when "King"
+           return true if king_valid_moves(piece_input, move_input, piece)
            false  
         end
     end
@@ -68,23 +85,50 @@ class Game
     def rook_valid_moves(piece_input, move_input, piece)
         y, x = piece_input #current location input
         i, j = move_input #move to this location input
-        
+        return false if y == i && x == j
+
         if y == i #horizontal case
             move_array = self.game_board.board[y]
-
+        
             if move_array[j] != " "
                 return false if move_array[j].player == piece.player
             end
 
-            while x < j 
-                return false if move_array[j] != " "
+            if x < j    
                 x += 1
+                while x < j 
+                    return false if move_array[x] != " "
+                    x += 1
             end
-
+            else
+                    x -= 1
+                while x > j 
+                    return false if move_array[x] != " "
+                    x -= 1
+                end
+            end
             return true
-
         elsif x == j #vertical case
             move_array = self.game_board.board.transpose[x]
+        
+            if move_array[i] != " "
+                return false if move_array[i].player == piece.player
+            end
+
+            if y < i    
+                y += 1
+                while y < i 
+                    return false if move_array[y] != " "
+                    y += 1
+            end
+            else
+                    y -= 1
+                while y > i 
+                    return false if move_array[y] != " "
+                    y -= 1
+                end
+            end
+            return true
         end
     end
 end
