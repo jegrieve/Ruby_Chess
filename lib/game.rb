@@ -128,9 +128,18 @@ class Game
         end
     end
 
-    # def pawn_valid_moves(piece_input, move_input, piece)
+    def pawn_valid_moves(piece_input, move_input, piece)
+        y, x = piece_input #current location input
+        i, j = move_input #move to this location input
 
-    # end
+        return false if y == i && x == j
+
+        if self.game_board.board[i][j] != " "
+            return false if self.game_board.board[i][j].player == piece.player
+        end
+
+        
+    end
 
     def knight_valid_moves(piece_input, move_input, piece)
         y, x = piece_input #current location input
@@ -201,9 +210,10 @@ class Game
 
     end
 
-    # def queen_valid_moves(piece_input, move_input, piece)
-
-    # end
+    def queen_valid_moves(piece_input, move_input, piece)
+        return true if bishop_valid_moves(piece_input, move_input, piece) && rook_valid_moves(piece_input, move_input, piece)
+        false
+    end
 
     def king_valid_moves(piece_input, move_input, piece) #will have to prevent being placed in check positions
         y, x = piece_input #current location input
