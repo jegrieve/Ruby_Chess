@@ -138,7 +138,20 @@ class Game
             return false if self.game_board.board[i][j].player == piece.player
         end
 
-        
+        if x == j #moving up one or two spaces
+            y += 1
+            while y < i 
+                return false if self.game_board.board[y][x] != " " 
+                y += 1
+            end
+        else #moving top-left or top-right
+            if x < j #top-left case
+                return true if self.game_board.board[i][j] != " " && self.game_board.board[i][j].player != piece.player
+            else #top-right case
+                return true if self.game_board.board[i][j] != " " && self.game_board.board[i][j].player != piece.player
+            end
+        end
+        return true
     end
 
     def knight_valid_moves(piece_input, move_input, piece)
