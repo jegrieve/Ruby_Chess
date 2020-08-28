@@ -14,9 +14,18 @@ class Game
             display_board
             current_player = self.players.first
             puts "#{current_player.player}'s turn'"
-            #if check?(current_player.player)
-            #have to move your own king
+            #if check?(current_player.player) && !checkmate?(current_player.player)
+            #king is preselected
+            # y, x = king_pos(current_player)
+            # piece_input = [y,x]
+            # piece = self.game_board.board[y][x]
+            # move_input = current_player.get_input_move(piece)
+            # while !valid_move?(piece_input, move_input, piece) || !valid_game_move(piece_input, move_input, piece) || check?(current_player.player)
+            #     puts "Move not valid, please choose a valid move"
+            #     move_input = current_player.get_input_move(piece)
+            # end
             #else
+            #break if checkmate?(current_player.player) 
             piece_input = current_player.get_input_piece
             while !valid_piece?(piece_input, current_player)
                 puts "Piece not valid, please choose a valid piece"
@@ -29,13 +38,13 @@ class Game
                 puts "Move not valid, please choose a valid move"
                 move_input = current_player.get_input_move(piece)
             end
+            #end
             place_piece(move_input, piece, piece_input)
             #break if checkmate?(current_player.player)
             display_board
             winner(self.players.first.player) if win?
             self.players.reverse!
             rotate_board
-            #end
         end
     end
 
@@ -43,8 +52,21 @@ class Game
         return true if checkmate?(player)
     end
 
-    def move_check
-        
+    def checkmate?(player)
+       king_pos = king_pos(player)
+       y, x = king_pos
+       piece = self.game_board.board[y][x]
+       pos_moves = piece.possible_moves
+       while !pos_moves.empty?
+            pos_move = pos_moves.shift
+            i, j = pos_move
+            if valid_game_move(king_pos, pos_move, piece)
+                self.game_board.board[y][x] = " "
+                self.game_board.board[i][j] = piece
+            end
+            return false if !check?(player)
+       end
+       return true if check?(player)
     end
 
     def check?(player)
