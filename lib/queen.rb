@@ -64,4 +64,105 @@ class Queen
         end
         moves    
     end
+
+    def queen_valid_moves(piece_pos, piece_move_pos, board)
+        return true if valid_horizontal_moves(piece_pos, piece_move_pos, board) && valid_diagonal_moves(piece_pos, piece_move_pos, board)
+        false
+    end
+
+    def valid_horizontal_moves(piece_pos, piece_move_pos, board)
+        y, x = piece_pos
+        i, j = piece_move_pos
+        return false if y == i && x == j
+
+        if board[i][j] != " "
+            return false if board[i][j].player == self.player
+        end
+
+        if y == i 
+            move_array = board[y]
+        
+            if x < j    
+                x += 1
+                while x < j 
+                    return false if move_array[x] != " "
+                    x += 1
+            end
+            else
+                    x -= 1
+                while x > j 
+                    return false if move_array[x] != " "
+                    x -= 1
+                end
+            end
+            return true
+        elsif x == j 
+            move_array = board.transpose[x]
+        
+            if y < i    
+                y += 1
+                while y < i 
+                    return false if move_array[y] != " "
+                    y += 1
+            end
+            else
+                    y -= 1
+                while y > i 
+                    return false if move_array[y] != " "
+                    y -= 1
+                end
+            end
+            return true
+        end
+    end
+
+    def valid_diagonal_moves(piece_pos, piece_move_pos, board)
+        y, x = piece_pos 
+        i, j = piece_move_pos 
+
+        return false if y == i && x == j
+
+        if board[i][j] != " "
+            return false if board[i][j].player == self.player
+        end
+
+        if y < i  
+            y += 1
+            if x < j 
+                x += 1
+                while x < j
+                    return false if board[y][x] != " " 
+                    x += 1
+                    y += 1
+                end
+
+            else
+                x -= 1
+                while x > j
+                    return false if board[y][x] != " " 
+                    x -= 1
+                    y += 1
+                end
+            end
+        else 
+            y -= 1
+            if x < j 
+                x += 1
+
+                while x < j
+                    return false if board[y][x] != " " 
+                    x += 1
+                    y -= 1
+                end
+            else 
+                x -= 1
+                while x > j
+                    return false if board[y][x] != " " 
+                    x -= 1
+                    y -= 1
+                end 
+            end
+            return true
+        end
+    end
 end

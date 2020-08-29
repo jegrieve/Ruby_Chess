@@ -17,4 +17,17 @@ class Knight
         end
         moves
     end
+
+    def knight_valid_moves(piece_pos, piece_move_pos, board)
+        y, x = piece_pos 
+        i, j = piece_move_pos 
+
+        return false if y == i && x == j
+
+        if board[i][j] != " "
+            return false if board[i][j].player == self.player
+        end
+
+        return true
+    end
 end

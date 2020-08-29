@@ -22,6 +22,32 @@ class Pawn
         moves
     end
 
+    def pawn_valid_moves(piece_pos, piece_move_pos, board)
+        y, x = piece_pos
+        i, j = piece_move_pos 
+
+        return false if y == i && x == j
+
+        if board[i][j] != " "
+            return false if board[i][j].player == self.player
+        end
+
+        if x == j 
+            y += 1
+            while y < i 
+                return false if board[y][x] != " " 
+                y += 1
+            end
+        else 
+            if x < j 
+                return true if board[i][j] != " " && board[i][j].player != self.player
+            else 
+                return true if board[i][j] != " " && board[i][j].player != self.player
+            end
+        end
+        return true
+    end
+
     #  def promotion(pos)
     #     y, x = pos
     #     if y == 0
