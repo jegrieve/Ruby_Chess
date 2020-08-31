@@ -27,11 +27,12 @@ class Game
         piece_input = valid_piece_input(current_player.get_input_piece, current_player) 
         piece = selected_piece(piece_input)
         move_input = valid_move_input(piece_input, current_player.get_input_move(piece), piece, current_player)
+        piece = promote_pawn(current_player, piece.value) if promotion?(move_input)
         place_piece(piece_input, move_input, piece)
         display_board
         self.players.reverse!
         self.game_board.rotate_board
-        end
+        end 
     end
     end
 
@@ -177,7 +178,54 @@ class Game
         end
         moves
     end
+
+    #------- Pawn Promotion --------
+
+    def promotion?(pos)
+        y, x = pos
+        if y == 0
+            return true
+        end
+        false
+    end
+
+    def promote_pawn(player, pawn_value)
+        puts "Choose a new piece (Ex: R for Rook, K for Knight)"
+        piece = gets.chomp
+        valid_letters = ["R","K","Q","B"]
+        while !valid_letters.include?(piece.upcase)
+            puts "Please choose valid piece (R,K,Q,B)"
+            piece = gets.chomp
+        end
+        piece_selected(piece, player, pawn_value)
+     end
+
+     def piece_selected(piece, player, pawn_value)
+       case piece.upcase
+       when "R"
+            return Rook.new(player.id, "\u2656","Rook") if pawn_value == "\u2659"
+            Rook.new(player.id, "\u265C", "Rook")
+       when "K"
+            return Knight.new(player.id,"\u2658","Knight") if pawn_value == "\u2659"
+            Knight.new(player.id, "\u265E", "Knight")
+       when "B"
+            return Bishop.new(player.id,"\u2657" ,"Bishop") if pawn_value == "\u2659"
+            Bishop.new(player.id, "\u265D", "Bishop")
+       when "Q"
+            return Queen.new(player.id,"\u2655","Queen") if pawn_value == "\u2659"
+            Queen.new(player.id, "\u265B", "Queen")
+       end
+     end
+
 end
+
+#To-Do:
+#Pawn promotion
+#Instead of using 2 numbers for y and x, can use a number for y and a letter for x
+#castling?
+#Serialize/save game
+#stale_mate?
+#push to TOP
 
 a = Game.new(Player.new("James"), Player.new("Adam"))
 
