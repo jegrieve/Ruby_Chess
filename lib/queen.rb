@@ -66,7 +66,7 @@ class Queen
     end
 
     def queen_valid_moves(piece_pos, piece_move_pos, board)
-        return true if valid_horizontal_moves(piece_pos, piece_move_pos, board) && valid_diagonal_moves(piece_pos, piece_move_pos, board)
+        return true if valid_horizontal_moves(piece_pos, piece_move_pos, board) || valid_diagonal_moves(piece_pos, piece_move_pos, board)
         false
     end
 
@@ -117,8 +117,8 @@ class Queen
     end
 
     def valid_diagonal_moves(piece_pos, piece_move_pos, board)
-        y, x = piece_pos 
-        i, j = piece_move_pos 
+        y, x = piece_pos #current location input
+        i, j = piece_move_pos #move to this location input
 
         return false if y == i && x == j
 

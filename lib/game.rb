@@ -3,9 +3,13 @@ require "./lib/player.rb"
 require "yaml"
 class Game
     attr_accessor :game_board, :players
-    def initialize(player1, player2)
-        @game_board = Board.new(player1, player2)
-        @players = [player1, player2]
+    def initialize(players, game_board = nil)
+        if game_board
+            @game_board = game_board
+        else
+            @game_board = Board.new(players.first, players.last)
+        end
+        @players = [players.first, players.last]
         run
     end
 
@@ -22,7 +26,7 @@ class Game
                  if checkmate == true
                     check_mate(current_player)
                     puts "Game Over! #{current_player.id} loses, and #{self.players.last.id} wins!"
-                    return
+                    return true
                  end
                  self.players.reverse!
                  self.game_board.rotate_board
@@ -38,6 +42,7 @@ class Game
         end 
     end
         puts "Game exited"
+        return true
     end
 
     def help(current_player)
@@ -253,7 +258,6 @@ class Game
      end
 
      #YAML methods
-
      def to_yaml
         YAML.dump ({
           :game_board => @game_board,
@@ -263,18 +267,9 @@ class Game
     
       def self.from_yaml(string)
         data = YAML.load(string)
-        self.new(data[:game_board], data[:players]) #basically this is Game.new(player.new(), player.new) but the inputs are wrong
+        self.new(data[:players], data[:game_board]) 
       end
 end
-
-#To-Do:
-#OFFER DRAW
-#Serialize/save game
-#Fix pawn 2 moves opener
-#Player tests/Game Tests
-#push to TOP
-
-#a = Game.new(Player.new("James"), Player.new("Adam"))
 
 if __FILE__ == $PROGRAM_NAME
     puts "Welcome to Chess!"
@@ -285,7 +280,7 @@ if __FILE__ == $PROGRAM_NAME
     player_1 = gets.chomp
     puts "Player 2 enter name:"
     player_2 = gets.chomp
-    $g = Game.new(Player.new(player_1), Player.new(player_2))
+    $g = Game.new([Player.new(player_1), Player.new(player_2)])
     elsif game_input.upcase == "L"
     Game.from_yaml(File.open("chess_game_save.yaml"))
     else
