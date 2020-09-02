@@ -1,6 +1,6 @@
 require "./lib/board.rb"
 require "./lib/player.rb"
-
+require "yaml"
 class Game
     attr_accessor :game_board, :players
     def initialize(player1, player2)
@@ -12,8 +12,11 @@ class Game
     def run
         while true 
         current_player = self.players.first
-        display_board
         puts "#{current_player.id}'s turn"
+        h = help(current_player)
+        break if h == "exited"
+        break if h == "draw"
+        display_board
         if check?(current_player)
                 checkmate = in_check(current_player)
                  if checkmate == true
@@ -34,10 +37,42 @@ class Game
         self.game_board.rotate_board
         end 
     end
+        puts "Game exited"
+    end
+
+    def help(current_player)
+        puts "Commands: (P) to play a move, (D) to offer a draw (S) to save current game (E) to exit game"
+        case gets.chomp.upcase
+
+        when "P"
+            return
+        when "D"
+            draw = offer_draw(current_player)
+            if draw
+                puts "Game is a draw"
+                return "draw"
+            else
+                puts "Game is not a draw, continue."
+            end
+        when "S"
+            File.write("chess_game_save.yaml", $g.to_yaml)
+        when "E"
+            "exited"
+        else
+            puts "invalid command, please enter a valid command"     
+            help       
+        end
     end
 
     def display_board
         self.game_board.display
+    end
+
+    def offer_draw(current_player)
+        puts "#{current_player.id} would like to draw, accept? (Y/N)"
+        input = gets.chomp
+        return true if input.upcase == "Y"
+        false
     end
 
     def in_check(current_player) 
@@ -217,24 +252,43 @@ class Game
        end
      end
 
+     #YAML methods
+
+     def to_yaml
+        YAML.dump ({
+          :game_board => @game_board,
+          :players => @players,
+        })
+      end
+    
+      def self.from_yaml(string)
+        data = YAML.load(string)
+        self.new(data[:game_board], data[:players]) #basically this is Game.new(player.new(), player.new) but the inputs are wrong
+      end
 end
 
 #To-Do:
-#Pawn promotion
-#Instead of using 2 numbers for y and x, can use a number for y and a letter for x
-#castling?
+#OFFER DRAW
 #Serialize/save game
-#stale_mate?
+#Fix pawn 2 moves opener
+#Player tests/Game Tests
 #push to TOP
 
-a = Game.new(Player.new("James"), Player.new("Adam"))
+#a = Game.new(Player.new("James"), Player.new("Adam"))
 
-
-# if __FILE__ == $PROGRAM_NAME
-#     puts "Welcome to Chess!"
-#     puts "Player 1 enter name:"
-#     player_1 = gets.chomp
-#     puts "Player 2 enter name:"
-#     player_2 = gets.chomp
-#     Game.new(Player.new(player_1), Player.new(player2))
-# end
+if __FILE__ == $PROGRAM_NAME
+    puts "Welcome to Chess!"
+    puts "New game (N) or load previous game (L)?"
+    game_input = gets.chomp
+    if game_input.upcase == "N"
+    puts "Player 1 enter name:"
+    player_1 = gets.chomp
+    puts "Player 2 enter name:"
+    player_2 = gets.chomp
+    $g = Game.new(Player.new(player_1), Player.new(player_2))
+    elsif game_input.upcase == "L"
+    Game.from_yaml(File.open("chess_game_save.yaml"))
+    else
+    puts "That command is not recognized"
+    end
+end
